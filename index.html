@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <h1>Weather App</h1>
+<form onsubmit="weatherapp(); return false;">
+    <label for="cityname">City:</label>
+    <input type="text" name="cityname" id="cityname" placeholder="Enter your city name">
+    <br>
+    <br>
+    <button type="submit">Get Weather</button>
+</form>
+<div id="result"></div>
+<div id="temp_max"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="module">
+    window.weatherapp = function () {
+        let cityname = document.querySelector("#cityname").value;
+        let Apikey = 'fc341fa661721fad071653b5ebf96d18';
+
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${cityname}&appid=${Apikey}&units=metric `)
+            .then(function (response) {
+                // handle success
+                console.log(response.data);
+                document.querySelector("#result").innerHTML = `current temperature of ${cityname} is ${response.data.main.temp}°C`;
+                document.querySelector("#temp_max").innerHTML= `max_temp is ${response.data.main.temp_max}°C  <br>
+                                                                min_temp is ${response.data.main.temp_min}°C    <br>
+                                                                feel_ like ${response.data.main.feels_like}`
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error.response.data);
+                document.querySelector("#result").innerHTML = "error while reterving data form the server ";
+            });
+    }
+</script>
+
+    
+</body>
+</html>
